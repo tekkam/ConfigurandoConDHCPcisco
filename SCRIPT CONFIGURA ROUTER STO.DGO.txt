@@ -1,0 +1,55 @@
+enable
+clock set 14:43 21 april 2019
+configure terminal
+hostname R.Sto.Dgo.
+no ip domain-lookup
+security passwords min-length 5
+enable secret clase
+line con 0
+exec-timeout 5 0
+password clase
+logging synchronous
+login
+line vty 0 4
+exec-timeout 5 0
+password clase
+logging synchronous
+login
+exit
+service password-encryption
+banner motd ^CACCESO RESTRINGIDO SOLO PERSONAL AUTORIZADO^C
+interface GigabitEthernet0/0
+description LAN Santo Domingo
+ip address 192.45.30.33 255.255.255.248
+no shutdown
+exit
+interface Serial0/0/0
+description Santo Domingo - Santiago
+ip address 192.45.30.49 255.255.255.252
+clock rate 1280000
+no shutdown
+interface Serial0/0/1
+description Santo Domingo - La Romana
+ip address 192.45.30.53 255.255.255.252
+clock rate 1280000
+no shutdown
+interface Serial0/1/0
+description Santo Domingo - Puerto Rico
+ip address 192.45.30.57 255.255.255.252
+clock rate 1280000
+no shutdown
+exit
+ip route 192.45.30.56 255.255.255.252 Serial0/1/0
+ip route 192.45.30.52 255.255.255.252 Serial0/0/1
+ip route 192.45.30.16 255.255.255.240 Serial0/0/1
+ip route 192.45.30.48 255.255.255.252 Serial0/0/0
+ip route 192.45.30.0 255.255.255.240 Serial0/0/0
+ip dhcp pool Santo_Domingo
+network 192.45.30.32 255.255.255.248
+default-router 192.45.30.33
+exit
+ip dhcp excluded-address 192.45.30.33 192.45.30.34
+end
+copy running-config startup-config
+
+show startup-config

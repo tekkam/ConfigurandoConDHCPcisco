@@ -1,0 +1,36 @@
+enable
+clock set 15:30 21 april 2019
+configure terminal
+hostname S.Santiago
+enable secret clase
+line con 0
+password clase
+logging synchronous
+login
+exec-timeout 5 0
+line vty 0 4
+exec-timeout 5 0
+password clase
+logging synchronous
+login
+exit
+service password-encryption
+banner motd ^CACCESO RESTRINGIDO SOLO PERSONAL AUTORIZADO^C
+ip default-gateway 192.45.30.1
+vlan 99
+name ADMINISTRACION/NATIVA
+exit
+interface range f0/1-24,g0/1-2
+switchport mode access
+switchport access vlan 99
+exit
+interface Vlan99
+ip address 192.45.30.2 255.255.255.240
+no shutdown
+interface Vlan1
+no ip address
+shutdown
+end
+copy running-config startup-config
+
+show startup-config
